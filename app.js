@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const fs = require("fs");
-const path = require("path");
 const express = require("express");
 const app = express();
 const vision = require("@google-cloud/vision");
@@ -33,12 +32,6 @@ async function getEmotion(imageUrl) {
 }
 
 app.post("/getMood", upload.single("image"), (req, res) => {
-  if (!fs.existsSync(path.join(__dirname, 'google_credentials.json'))) {
-    fs.writeFileSync(
-      path.join(__dirname, "google_credentials.json"),
-      process.env.GOOGLE_CREDENTIALS
-    );
-  }
   getEmotion(req.file.path).then((faces) => {
     const face = faces[0];
     const likelihood = {
@@ -68,11 +61,5 @@ app.post("/getMood", upload.single("image"), (req, res) => {
 });
 
 app.listen(port, () => {
-  if (!fs.existsSync(path.join(__dirname, 'google_credentials.json'))) {
-    fs.writeFileSync(
-      path.join(__dirname, "google_credentials.json"),
-      process.env.GOOGLE_CREDENTIALS
-    );
-  }
   console.log(`Listening on port ${port}`);
 });
