@@ -1,0 +1,21 @@
+{
+  "name": "Cameract",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/vision": "^2.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  }
+}
