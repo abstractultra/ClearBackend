@@ -33,6 +33,12 @@ async function getEmotion(imageUrl) {
 }
 
 app.post("/getMood", upload.single("image"), (req, res) => {
+  if (!fs.existsSync(path.join(__dirname, 'google_credentials.json'))) {
+    fs.writeFileSync(
+      path.join(__dirname, "google_credentials.json"),
+      process.env.GOOGLE_CREDENTIALS
+    );
+  }
   getEmotion(req.file.path).then((faces) => {
     const face = faces[0];
     const likelihood = {
