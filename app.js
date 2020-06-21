@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const app = express();
 const vision = require("@google-cloud/vision");
@@ -46,14 +47,14 @@ app.post("/getMood", upload.single("image"), (req, res) => {
       likelihood.sad,
       likelihood.surprised
     );
-    const mostLikely = (function() {
+    const mostLikely = (function () {
       for (let [key, value] of Object.entries(likelihood)) {
         if (value === highestProbability) return key;
       }
     })();
     const data = {
       likelihood,
-      mostLikely
+      mostLikely,
     };
     fs.unlinkSync(req.file.path);
     res.json(data);
@@ -61,5 +62,11 @@ app.post("/getMood", upload.single("image"), (req, res) => {
 });
 
 app.listen(port, () => {
+  if (!fs.existsSync(path.join(__dirname, 'google_credentials.json'))) {
+    fs.writeFileSync(
+      path.join(__dirname, "google_credentials.json"),
+      process.env.GOOGLE_CREDENTIALS
+    );
+  }
   console.log(`Listening on port ${port}`);
 });
